@@ -1,46 +1,47 @@
 <template>
-  <div class="app">
-    <v-header class="header"></v-header>
+  <div id="app">
+    <v-header></v-header>
     <div class="tab">
-      <div class="tab-item">
-        <a v-link="{path: '/goods'}" class="tab-button">商品</a>
+      <div class="tab-item border-1px">
+        <router-link to="/goods" class="tab-button">商品</router-link>
       </div>
       <div class="tab-item">
-        <a v-link="{path: '/ratings'}" class="tab-button">评论</a>
+        <router-link to="/ratings" class="tab-button">评论</router-link>
       </div>
       <div class="tab-item">
-        <a v-link="{path: '/seller'}" class="tab-button">商家</a>
+        <router-link to="/seller" class="tab-button">商家</router-link>
       </div>
     </div>
     <router-view></router-view>
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-  import header from 'components/header'
-
-  export default{
+<script>
+  import header from './components/header'
+  export default {
+    name: 'app',
     components: {
       'v-header': header
     }
   }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
-  @import "./common/stylus/mixin"
+<style lang="stylus" ref="stylesheet/stylus">
+  @import "./common/stylus/mixin.styl"
 
-  .app
+  #app
     .tab
       display flex
       height 40px
-      border-1px(rgba(7, 17, 27, .1))
       .tab-item
         flex 1
         line-height 40px
-        text-align center
-        color rgb(77, 85, 93)
-        & > .tab-button
+        border-1px(rgba(7, 17, 27, .1))
+        .tab-button
           display block
+          font-size 14px
+          text-align center
+          color rgb(77, 86, 93)
           &.active
             color rgb(240, 20, 20)
 </style>
