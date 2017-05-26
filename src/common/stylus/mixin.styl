@@ -8,3 +8,16 @@ border-1px($color)
     bottom 0
     border-bottom 1px solid $color
     content ' '
+
+bg-img($url)
+  background-image url($url + "@2x.png")
+  @media (-webkit-min-pixel-ratio: 3),(min-pixel-ratio: 3)
+    background-image url($url + "@3x.png")
+
+inline-icon($width, $height)
+  display inline-block
+  vertical-align top
+  width $width
+  height $height
+  background-size $width $height
+  background-repeat no-repeat
