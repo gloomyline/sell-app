@@ -9,4 +9,4 @@ yarn-error.log*
 !resource/resource.zip
 src/components/header/*.png
 src/components/star/*.png
-
+src/components/spot/*.png
