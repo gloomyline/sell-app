@@ -19,6 +19,8 @@ module.exports = {
   'rules': {
     // allow paren-less arrow functions
     'arrow-parens': 0,
+    // allow no-semi
+    'semi': 0,
     // allow stroustrup brace style
     'brace-style': ['error', 'stroustrup'],
     // allow async-await

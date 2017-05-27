@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <v-header :seller="seller"></v-header>
-    <div class="tab">
-      <div class="tab-item border-1px">
+    <div class="tab border-1px">
+      <div class="tab-item">
         <router-link to="/goods" class="tab-button">商品</router-link>
       </div>
       <div class="tab-item">
@@ -52,10 +52,10 @@
     .tab
       display flex
       height 40px
+      border-1px(rgba(7, 17, 27, .1))
       .tab-item
         flex 1
         line-height 40px
-        border-1px(rgba(7, 17, 27, .1))
         .tab-button
           display block
           font-size 14px
