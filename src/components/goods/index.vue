@@ -33,13 +33,16 @@
                   <span class="cur-price">￥{{food.price}}</span>
                   <span v-show="food.oldPrice" class="old-price">￥{{food.oldPrice}}</span>
                 </div>
+                <div class="cart-control-wrapper">
+                  <cart-control :food="food"></cart-control>
+                </div>
               </div>
             </li>
           </ul>
         </li>
       </ul>
     </div>
-    <shop-cart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shop-cart>
+    <shop-cart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shop-cart>
   </div>
 </template>
 
@@ -47,6 +50,7 @@
   import BScroll from 'better-scroll'
   import spot from '@/components/spot'
   import shopcart from '@/components/shopcart'
+  import cartcontrol from '@/components/cartcontrol'
 
   const ERR_OK = 0
 
@@ -74,6 +78,17 @@
           }
         }
         return 0
+      },
+      selectFoods () {
+        let foods = []
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (!!food.count || food.count > 0) {
+              foods.push(food)
+            }
+          })
+        })
+        return foods
       }
     },
     created () {
@@ -98,6 +113,7 @@
         this.menuScroll = new BScroll(this.$el.querySelector('.menu-wrapper'), { click: true })
 
         this.foodsScroll = new BScroll(this.$el.querySelector('.foods-wrapper'), {
+          click: true,
           probeType: 3
         })
         this.foodsScroll.on('scroll', (pos) => {
@@ -126,7 +142,8 @@
     },
     components: {
       spot,
-      'shop-cart': shopcart
+      'shop-cart': shopcart,
+      'cart-control': cartcontrol
     }
   }
 </script>
@@ -180,6 +197,7 @@
         background #f3f5f7
       .food-item
         display flex
+        position relative
         margin 18px
         padding-bottom 18px /* 注意两个元素 margin 重合，这里采用 padding 避免 */
         border-1px(rgba(7, 17, 27, .1))
@@ -228,4 +246,8 @@
               font-weight normal
               text-decoration: line-through
               color rgb(7, 17, 27)
+          .cart-control-wrapper
+            position absolute
+            right 0
+            bottom 16px
 </style>
