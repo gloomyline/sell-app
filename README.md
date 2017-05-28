@@ -22,6 +22,14 @@
   new BScroll(this.$el.getElementById('wrapper'));
 </script>
 ```
+4. Vue 中由于数据更新是异步的，所以在操作的 DOM 的时候需要特别注意，
+需要将这些操作放在 vm.$nextTick() 的回调中去执行
+```javascript
+this.$nextTick(() => {
+  // 此处放对 DOM 的一些操作，例如计算节点的高度
+  let height = node.clientHeight
+})
+```
 
 ## Build Setup
 

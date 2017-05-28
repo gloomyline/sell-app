@@ -12,9 +12,11 @@
     </div>
     <!-- 右侧食品栏 -->
     <div class="foods-wrapper">
+      <!-- 对应左侧一个菜单下的区块 -->
       <ul class="food-list-hook">
         <li v-for="good in goods" class="food-list">
           <h1 class="title">{{good.name}}</h1>
+          <!-- 每个个菜单下的列表 -->
           <ul>
             <li v-for="food in good.foods" class="food-item border-1px">
               <div class="icon">
@@ -110,11 +112,14 @@
           this.listHeight.push(_height)
         }
       },
-      selectMenu (index, event) {
-        if (!event._constructed) return
+      selectMenu (index, event) { // 点击左侧菜单中的 item 监听
+        if (!event._constructed) return // 去除浏览器也就是原生点击事件派发的事件干扰，确保在浏览器只触发一次点击事件
         let foodList = this.$el.querySelector('.food-list-hook').children
         let el = foodList[index]
         this.foodsScroll.scrollToElement(el, 300)
+      },
+      selectFood (index, event) { // 点击右侧食品列表中的 item 监听
+        if (!event._constructed) return
       }
     },
     components: {
