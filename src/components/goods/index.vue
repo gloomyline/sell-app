@@ -3,7 +3,8 @@
     <!-- 左侧菜单栏 -->
     <div class="menu-wrapper">
       <ul>
-        <li v-for="good in goods" class="menu-item border-1px">
+        <li v-for="(good, index) in goods" class="menu-item border-1px" :class="{'current': currentIndex === index}"
+            @click="selectMenu(index, $event)">
           <span class="text border-1px"><spot v-show="good.type>0" :spotType="good.type" :size="3" class="spot"></spot>
           {{good.name}}</span>
         </li>
@@ -11,7 +12,7 @@
     </div>
     <!-- 右侧食品栏 -->
     <div class="foods-wrapper">
-      <ul>
+      <ul class="food-list-hook">
         <li v-for="good in goods" class="food-list">
           <h1 class="title">{{good.name}}</h1>
           <ul>
@@ -53,7 +54,22 @@
     },
     data () {
       return {
-        goods: []
+        goods: [],
+        listHeight: [],
+        scrollY: 0
+      }
+    },
+    computed: {
+      currentIndex () {
+        let listHeight = this.listHeight
+        for (let i = 0; i < listHeight.length; i++) {
+          let _curH = listHeight[i]
+          let _nextH = listHeight[i + 1]
+          if (!_nextH || (this.scrollY >= _curH && this.scrollY < _nextH)) {
+            return i
+          }
+        }
+        return 0
       }
     },
     created () {
@@ -69,13 +85,36 @@
         // 异步更新数据，需要手动更新 DOM ，初始化滚动
         this.$nextTick(() => {
           this._initScroll()
+          this._calculateHeight()
         })
       })
     },
     methods: {
       _initScroll () {
-        this.menuScroll = new BScroll(this.$el.querySelector('.menu-wrapper'), {})
-        this.foodsScroll = new BScroll(this.$el.querySelector('.foods-wrapper'), {})
+        this.menuScroll = new BScroll(this.$el.querySelector('.menu-wrapper'), { click: true })
+
+        this.foodsScroll = new BScroll(this.$el.querySelector('.foods-wrapper'), {
+          probeType: 3
+        })
+        this.foodsScroll.on('scroll', (pos) => {
+          this.scrollY = Math.abs(Math.round(pos.y))
+        })
+      },
+      _calculateHeight () {
+        let foodList = this.$el.querySelector('.food-list-hook')
+        let _height = 0
+        this.listHeight.push(_height)
+        for (let i = 0, children = foodList.children; i < children.length; i++) {
+          let item = children[i]
+          _height += item.clientHeight
+          this.listHeight.push(_height)
+        }
+      },
+      selectMenu (index, event) {
+        if (!event._constructed) return
+        let foodList = this.$el.querySelector('.food-list-hook').children
+        let el = foodList[index]
+        this.foodsScroll.scrollToElement(el, 300)
       }
     },
     components: {
@@ -106,6 +145,14 @@
         padding 0 12px
         line-height 14px
         border-1px(rgba(7, 17, 27, .1))
+        &.current
+          position relative
+          z-index 10
+          margin-top -1px
+          background #fff
+          .text
+            border-none()
+            font-weight 700
         .text
           display table-cell
           font-size 12px
