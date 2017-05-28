@@ -1,39 +1,46 @@
 <template>
   <div class="goods">
+    <!-- 左侧菜单栏 -->
     <div class="menu-wrapper">
-      <li v-for="good in goods" class="menu-item border-1px">
-        <span class="text border-1px"><spot v-show="good.type>0" :spotType="good.type" :size="3" class="spot"></spot>
-        {{good.name}}</span>
-      </li>
+      <ul>
+        <li v-for="good in goods" class="menu-item border-1px">
+          <span class="text border-1px"><spot v-show="good.type>0" :spotType="good.type" :size="3" class="spot"></spot>
+          {{good.name}}</span>
+        </li>
+      </ul>
     </div>
+    <!-- 右侧食品栏 -->
     <div class="foods-wrapper">
-      <li v-for="good in goods" class="food-list">
-        <h1 class="title">{{good.name}}</h1>
-        <ul>
-          <li v-for="food in good.foods" class="food-item border-1px">
-            <div class="icon">
-              <img width="57" height="57" :src="food.icon">
-            </div>
-            <div class="content">
-              <h2 class="name">{{food.name}}</h2>
-              <p class="desc">{{food.description}}</p>
-              <div class="extra">
-                <span class="sell-count">月售{{food.sellCount}}份</span>
-                <span class="rating">好评率{{food.rating}}%</span>
+      <ul>
+        <li v-for="good in goods" class="food-list">
+          <h1 class="title">{{good.name}}</h1>
+          <ul>
+            <li v-for="food in good.foods" class="food-item border-1px">
+              <div class="icon">
+                <img width="57" height="57" :src="food.icon">
               </div>
-              <div class="price">
-                <span class="cur-price">￥{{food.price}}</span>
-                <span v-show="food.oldPrice" class="old-price">￥{{food.oldPrice}}</span>
+              <div class="content">
+                <h2 class="name">{{food.name}}</h2>
+                <p class="desc">{{food.description}}</p>
+                <div class="extra">
+                  <span class="sell-count">月售{{food.sellCount}}份</span>
+                  <span class="rating">好评率{{food.rating}}%</span>
+                </div>
+                <div class="price">
+                  <span class="cur-price">￥{{food.price}}</span>
+                  <span v-show="food.oldPrice" class="old-price">￥{{food.oldPrice}}</span>
+                </div>
               </div>
-            </div>
-          </li>
-        </ul>
-      </li>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import BScroll from 'better-scroll'
   import spot from '@/components/spot'
 
   const ERR_OK = 0
@@ -59,7 +66,17 @@
         else {
           console.log(res.msg)
         }
+        // 异步更新数据，需要手动更新 DOM ，初始化滚动
+        this.$nextTick(() => {
+          this._initScroll()
+        })
       })
+    },
+    methods: {
+      _initScroll () {
+        this.menuScroll = new BScroll(this.$el.querySelector('.menu-wrapper'), {})
+        this.foodsScroll = new BScroll(this.$el.querySelector('.foods-wrapper'), {})
+      }
     },
     components: {
       spot
@@ -130,7 +147,7 @@
             color rgb(7, 17, 27)
           .desc
             margin-bottom 8px
-            line-height 10px
+            line-height 14px
             font-size 10px
           .extra
             font-size 0
