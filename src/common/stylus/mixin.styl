@@ -9,6 +9,10 @@ border-1px($color)
     border-bottom 1px solid $color
     content ' '
 
+  border-none()
+    &:after
+      display none
+
 bg-img($url)
   background-image url($url + "@2x.png")
   @media (-webkit-min-pixel-ratio: 3),(min-pixel-ratio: 3)
