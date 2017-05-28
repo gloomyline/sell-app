@@ -39,12 +39,14 @@
         </li>
       </ul>
     </div>
+    <shop-cart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shop-cart>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
   import spot from '@/components/spot'
+  import shopcart from '@/components/shopcart'
 
   const ERR_OK = 0
 
@@ -123,7 +125,8 @@
       }
     },
     components: {
-      spot
+      spot,
+      'shop-cart': shopcart
     }
   }
 </script>
