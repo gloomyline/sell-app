@@ -1,7 +1,5 @@
 <template>
-  <div class="icon" :class="iconClass">
-    <span :class="[classMap[spotType], iconClass]" class="icon"></span>
-  </div>
+  <span :class="[classMap[spotType], iconClass]" class="icon"></span>
 </template>
 
 <script type="text/ecmascript-6">
