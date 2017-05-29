@@ -45,7 +45,7 @@
             <ul v-if="seller.supports" class="discount-infos">
               <li v-for="support in seller.supports" class="discount-item">
                 <!--<span class="icon" :class="classMap[support.type]"></span>-->
-                <spot :spotType="support.type" :size="2"></spot>
+                <spot :spotType="support.type" :size="1"></spot>
                 <span class="text">{{support.description}}</span>
               </li>
             </ul>
@@ -82,6 +82,7 @@
       }
     },
     created () {
+      this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
     },
     methods: {
       showDetail () {
@@ -135,7 +136,18 @@
           margin-top 10px
           font-size 10px
           font-weight 200
-
+          .icon
+            inline-icon(12px, 12px)
+            &.decrease
+              bg-img('decrease_1')
+            &.discount
+              bg-img('discount_1')
+            &.guarantee
+              bg-img('guarantee_1')
+            &.invoice
+              bg-img('invoice_1')
+            &.special
+              bg-img('special_1')
       .support-count
         position absolute
         right 12px
@@ -232,6 +244,18 @@
               font-size 0
               &:last-child
                 margin-bottom 0
+              .icon
+                inline-icon(16px, 16px)
+                &.decrease
+                  bg-img('decrease_1')
+                &.discount
+                  bg-img('discount_1')
+                &.guarantee
+                  bg-img('guarantee_1')
+                &.invoice
+                  bg-img('invoice_1')
+                &.special
+                  bg-img('special_1')
               .text
                 margin-left 6px
                 font-size 12px

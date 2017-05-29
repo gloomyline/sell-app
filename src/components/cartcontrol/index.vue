@@ -14,9 +14,6 @@
 
   export default{
     props: {
-      eventBus: {
-        type: Object
-      },
       food: {
         type: Object
       },
@@ -41,11 +38,7 @@
       },
       decreaseCart (event) {
         if (!event._constructed) return
-        if (!this.food.count) return
-        else if (this.food.count === 0) {
-          this.food.count = 0
-        }
-        else {
+        if (this.food.count) {
           this.food.count--
         }
       }
