@@ -18,7 +18,7 @@
           <h1 class="title">{{good.name}}</h1>
           <!-- 每个个菜单下的列表 -->
           <ul>
-            <li v-for="food in good.foods" class="food-item border-1px">
+            <li v-for="(food, index) in good.foods" class="food-item border-1px">
               <div class="icon">
                 <img width="57" height="57" :src="food.icon">
               </div>
@@ -34,7 +34,7 @@
                   <span v-show="food.oldPrice" class="old-price">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cart-control-wrapper">
-                  <cart-control :food="food"></cart-control>
+                  <cart-control :food="food" :index="index"></cart-control>
                 </div>
               </div>
             </li>
@@ -42,7 +42,8 @@
         </li>
       </ul>
     </div>
-    <shop-cart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shop-cart>
+    <shop-cart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice"
+               :min-price="seller.minPrice"></shop-cart>
   </div>
 </template>
 
@@ -67,6 +68,23 @@
         scrollY: 0
       }
     },
+    mounted () {
+      this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+      this.$http.get('/api/goods').then((res) => {
+        res = res.body
+        if (res.errno === ERR_OK) {
+          this.goods = res.data
+        }
+        else {
+          console.log(res.msg)
+        }
+        // 异步更新数据，需要手动更新 DOM ，初始化滚动
+        this.$nextTick(() => {
+          this._initScroll()
+          this._calculateHeight()
+        })
+      })
+    },
     computed: {
       currentIndex () {
         let listHeight = this.listHeight
@@ -90,23 +108,6 @@
         })
         return foods
       }
-    },
-    created () {
-      this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
-      this.$http.get('/api/goods').then((res) => {
-        res = res.body
-        if (res.errno === ERR_OK) {
-          this.goods = res.data
-        }
-        else {
-          console.log(res.msg)
-        }
-        // 异步更新数据，需要手动更新 DOM ，初始化滚动
-        this.$nextTick(() => {
-          this._initScroll()
-          this._calculateHeight()
-        })
-      })
     },
     methods: {
       _initScroll () {
@@ -138,6 +139,10 @@
       },
       selectFood (index, event) { // 点击右侧食品列表中的 item 监听
         if (!event._constructed) return
+      },
+      addToCart (event) {
+        // console.log(event)
+        this.$refs.shopcart.drop(event.target)
       }
     },
     components: {
