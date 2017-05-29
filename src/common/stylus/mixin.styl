@@ -2,6 +2,11 @@
 color-shop-cart()
   color rgba(255, 255, 255, .4)
 
+/* filter */
+all-blur($size)
+  filter blur($size)
+  backdrop-filter blur($size)
+
 border-1px($color)
   position relative
   &:after
