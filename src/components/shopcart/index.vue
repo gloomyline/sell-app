@@ -21,13 +21,26 @@
         <p class="pay" :class="{'has-pay': pay[1] === 3}">{{pay[0]}}</p>
       </div>
     </div>
+    <!-- 小球容器 -->
+    <div class="balls-container">
+      <transition name="drop" v-for="(ball, index) in balls" :key="ball + '-' + index"
+                  @before-enter="_beforeEnter"
+                  @enter="_enter"
+                  @after-enter="_afterEnter">
+        <div class="ball" v-show="ball.show">
+          <span class="inner"></span>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import eventBus from '@/common/js/eventBus'
+
   export default{
     props: {
-      'selectFoods': {
+      selectFoods: {
         type: Array,
         default () {
           return [{
@@ -36,14 +49,31 @@
           }]
         }
       },
-      'deliveryPrice': {
+      deliveryPrice: {
         type: Number,
         default: 0
       },
-      'minPrice': {
+      minPrice: {
         type: Number,
         default: 0
       }
+    },
+    data () {
+      return {
+        balls: [
+          { show: false },
+          { show: false },
+          { show: false },
+          { show: false },
+          { show: false }
+        ],
+        dropBalls: []
+      }
+    },
+    mounted () {
+      eventBus.$on('cart-increase', (event) => {
+        this.drop(event.target)
+      })
     },
     computed: {
       totalPrice () {
@@ -51,7 +81,6 @@
         this.selectFoods.forEach((food, index) => {
           total += food.price * food.count
         })
-
         return total
       },
       totalCount () {
@@ -70,6 +99,53 @@
         }
         else {
           return ['去结算', 3]
+        }
+      }
+    },
+    methods: {
+      drop (el) {
+        for (let i = 0; i < this.balls.length; i++) {
+          let ball = this.balls[i];
+          if (!ball.show) {
+            ball.show = true;
+            ball.el = el;
+            this.dropBalls.push(ball);
+            return;
+          }
+        }
+      },
+      _beforeEnter (el) {
+        let count = this.balls.length
+        while (count--) {
+          let ball = this.balls[count]
+          if (ball.show) {
+            let rect = ball.el.getBoundingClientRect()
+            let x = rect.left - 32
+            let y = -(window.innerHeight - rect.top - 32)
+            el.style.display = ''
+            el.style.transform = `translate3d(${x}px, 0, 0)`
+            el.style.webkitTransform = `translate3d(${x}px, 0, 0)`
+            el.querySelector('.inner').style.transform = `translate3d(0, ${y}px, 0)`
+            el.querySelector('.inner').style.webkitTransform = `translate3d(0, ${y}px, 0)`
+          }
+        }
+      },
+      _enter (el, done) {
+        /* eslint-disable no-unused-vars */
+        let rf = el.offsetHeight // 修改 DOM, 触发 DOM 重绘
+        this.$nextTick(() => {
+          el.style.transform = 'translate3d(0, 0, 0)'
+          el.style.webkitTransform = 'translate3d(0, 0, 0)'
+          el.querySelector('.inner').style.transform = `translate3d(0, 0, 0)`
+          el.querySelector('.inner').style.webkitTransform = `translate3d(0, 0, 0)`
+        })
+        el.addEventListener('transitionend', done)
+      },
+      _afterEnter (el) {
+        let ball = this.dropBalls.shift()
+        if (ball) {
+          ball.show = false
+          el.style.display = 'none'
         }
       }
     }
@@ -165,4 +241,18 @@
           &.has-pay
             color #fff
             background #00b43c
+    .balls-container
+      .ball
+        position fixed
+        left 37px
+        bottom 22px
+        z-index 200
+        transition all .5s linear
+        .inner
+          display inline-block
+          width 16px
+          height 16px
+          border-radius 50%
+          background rgb(0, 160, 220)
+          transition all .5s cubic-bezier(0.49, -0.29, 0.75, 0.41)
 </style>
