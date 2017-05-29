@@ -72,7 +72,9 @@
     },
     mounted () {
       eventBus.$on('cart-increase', (event) => {
-        this.drop(event.target)
+        this.$nextTick(() => { // 体验优化，异步执行动画
+          this.drop(event.target)
+        })
       })
     },
     computed: {
