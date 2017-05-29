@@ -10,14 +10,21 @@
 
 <script type="text/ecmascript-6">
   import Vue from 'vue'
+  import eventBus from '@/common/js/eventBus'
 
   export default{
     props: {
+      eventBus: {
+        type: Object
+      },
       food: {
         type: Object
+      },
+      index: {
+        type: Number
       }
     },
-    created () {
+    mounted () {
     },
     methods: {
       increaseCart (event) {
@@ -29,6 +36,8 @@
         else {
           this.food.count++
         }
+        event.target.index = this.index
+        eventBus.$emit('cart-increase', event)
       },
       decreaseCart (event) {
         if (!event._constructed) return
