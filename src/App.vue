@@ -30,7 +30,7 @@
         seller: {}
       }
     },
-    created () {
+    mounted () {
       this.$http.get('/api/seller').then(res => {
         res = res.body
         if (res.errno === ERR_OK) {
