@@ -84,6 +84,22 @@ this.$nextTick(() => {
       transform: translateY(30px);
     }
     ```
+6. 自定义事件 (非父子组件通信)
+
+    有时候两个组件也需要通信(非父子关系)。在简单的场景下，可以使用一个空的 Vue 实例作为中央事件总线：
+    ```javascript
+    let bus = new Vue()
+ 
+    // 触发组件 A 中的事件
+    bus.$emit('id-selected', id)
+ 
+    // 在组件 B 创建的 hook 中监听事件
+    bus.$on('id-selected', (id) => {
+     // 事件触发回调
+     ...
+    })
+    ```
+    在复杂的情况下，我们应该考虑使用专门的[状态管理模式](https://cn.vuejs.org/v2/guide/state-management.html)
 
 ## Build Setup
 
