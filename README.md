@@ -30,6 +30,60 @@ this.$nextTick(() => {
   let height = node.clientHeight
 })
 ```
+5. 列表的过渡效果，使用内置组件 <transition-group>
+  - 特点
+    - 不同于 <transition>,它会以一个真实元素呈现:默认为一个 <span>。
+    可以通过 tag 特性更换为其他元素
+    - 内部元素 **总是需要** 提供 **唯一** 的 key 属性值
+  - 例子
+  
+    html 代码
+    ```html
+    <div id="list-demo" class="demo">
+      <button v-on:click="add">Add</button>
+      <button v-on:click="remove">Remove</button>
+      <transition-group name="list" tag="p">
+        <span v-for="item in items" v-bind:key="item" class="list-item">
+          {{ item }}
+        </span>
+      </transition-group>
+    </div>
+    ```
+    js 代码
+    ```javascript
+    new Vue({
+      el: '#list-demo',
+      data: {
+        items: [1,2,3,4,5,6,7,8,9],
+        nextNum: 10
+      },
+      methods: {
+        randomIndex: function () {
+          return Math.floor(Math.random() * this.items.length)
+        },
+        add: function () {
+          this.items.splice(this.randomIndex(), 0, this.nextNum++)
+        },
+        remove: function () {
+          this.items.splice(this.randomIndex(), 1)
+        },
+      }
+    })
+    ```
+    css 样式
+    ```stylesheet
+    .list-item {
+      display: inline-block;
+      margin-right: 10px;
+    }
+    .list-enter-active, .list-leave-active {
+      transition: all 1s;
+    }
+    .list-enter, .list-leave-active {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    ```
 
 ## Build Setup
 
