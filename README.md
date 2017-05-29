@@ -101,6 +101,28 @@ this.$nextTick(() => {
     ```
     在复杂的情况下，我们应该考虑使用专门的[状态管理模式](https://cn.vuejs.org/v2/guide/state-management.html)
 
+7. 在实现一组元素(小球)的过渡时候，由于每个小球的元素都是独立的，只不过是一组独立元素的过渡，
+所以这里采用内置组件 <transition-> 而不是 <transition-group>。后者在一组元素相互关联，相互影响的时候使用
+较为合适。所以这里需要使用 v-for 指令实现一组相同过渡的元素。
+> 参考链接：[点我](http://web.jobbole.com/89533/)
+
+8. 小球过渡效果完成的时候,需要监听动画完成时间，并在回调中调用 'enter' 这个钩子函数传出的 'done'方法，否则
+无法准确定位指定小球的过渡效果状态
+```javascript
+// error 一进入直接表示动画完成，所以进入 afterEnter 状态
+...
+enter (el, done) {
+  ...
+  done()
+}
+// correct
+...
+enter (el, done) {
+  ...
+  el.addEventListener('transitioned', done) // 在动画完成后指定小球才进入 afterEnter 状态
+}
+```
+
 ## Build Setup
 
 ``` bash
