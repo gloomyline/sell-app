@@ -24,6 +24,7 @@
 <style lang="stylus" rel="stylesheet/stylus">
   .price
     font-size 0
+    height 24px
     line-height 24px
     .cur-price
       margin-right 8px
