@@ -122,6 +122,9 @@ enter (el, done) {
   el.addEventListener('transitioned', done) // 在动画完成后指定小球才进入 afterEnter 状态
 }
 ```
+9. 食物详情页中的购物车按钮在执行小球抛出动画的时候被直接重新渲染成 'display:none' ，小球的初始位置
+ 无法获得。解决办法是不让此按钮立即隐藏，给他加上动画渐隐，这样在小球执行动画的时候就可以
+ 计算到购物车按钮的起始位置
 
 ## Build Setup
 
