@@ -65,11 +65,11 @@
 <script type="text/ecmascript-6">
   import eventBus from '@/common/js/eventBus'
   import BScroll from 'better-scroll'
-  import cartcontrol from '@/components/cartcontrol'
+  import cartControl from '@/components/cartcontrol'
 
   export default{
     components: {
-      'cart-control': cartcontrol
+      cartControl
     },
     props: {
       selectFoods: {
