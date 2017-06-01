@@ -18,7 +18,7 @@
           <h1 class="title">{{good.name}}</h1>
           <!-- 每个个菜单下的列表 -->
           <ul>
-            <li v-for="(food, index) in good.foods" class="food-item border-1px">
+            <li v-for="(food, index) in good.foods" @click="selectFood(food, $event)" class="food-item border-1px">
               <div class="icon">
                 <img width="57" height="57" :src="food.icon">
               </div>
@@ -44,12 +44,14 @@
     </div>
     <shop-cart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice"
                :min-price="seller.minPrice"></shop-cart>
+    <food ref="food" :food="selectedFood"></food>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
   import spot from '@/components/spot'
+  import food from '@/components/food'
   import shopcart from '@/components/shopcart'
   import cartcontrol from '@/components/cartcontrol'
 
@@ -65,7 +67,8 @@
       return {
         goods: [],
         listHeight: [],
-        scrollY: 0
+        scrollY: 0,
+        selectedFood: {}
       }
     },
     mounted () {
@@ -137,16 +140,15 @@
         let el = foodList[index]
         this.foodsScroll.scrollToElement(el, 300)
       },
-      selectFood (index, event) { // 点击右侧食品列表中的 item 监听
+      selectFood (food, event) { // 点击右侧食品列表中的 item 监听
         if (!event._constructed) return
-      },
-      addToCart (event) {
-        // console.log(event)
-        this.$refs.shopcart.drop(event.target)
+        this.selectedFood = food
+        this.$refs.food.show()
       }
     },
     components: {
       spot,
+      food,
       'shop-cart': shopcart,
       'cart-control': cartcontrol
     }
