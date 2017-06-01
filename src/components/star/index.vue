@@ -51,7 +51,7 @@
     font-size 0
     &.star-48
       .star-item
-        margin-right 20px
+        margin-right 22px
         inline-icon(20px, 20px)
         &:last-child
           margin-right 0
@@ -63,7 +63,7 @@
           bg-img('star48_off')
     &.star-36
       .star-item
-        margin-right 15px
+        margin-right 6px
         inline-icon(15px, 15px)
         &:last-child
           margin-right 0
@@ -75,7 +75,7 @@
           bg-img('star36_off')
     &.star-24
       .star-item
-        margin-right 10px
+        margin-right 3px
         inline-icon(10px, 10px)
         &:last-child
           margin-right 0
