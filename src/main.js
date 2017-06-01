@@ -21,4 +21,5 @@ new Vue({
 })
 
 // default to the goods page
-router.push('/goods')
+// router.push('/goods')
+router.push('/ratings')
