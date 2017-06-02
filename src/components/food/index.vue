@@ -104,7 +104,7 @@
       cartControl,
       ratingSelect
     },
-    mounted () {
+    created () {
       eventBus.$on('rating-type-select', (selType) => {
         this.selectType = selType
         this.$nextTick(() => {
@@ -125,7 +125,7 @@
           let _ratings = ratings.filter((rating) => {
             return rating.text
           })
-          if (this.selectType === 2) {
+          if (this.selectType === ALL) {
             return _ratings
           }
           else {
@@ -135,7 +135,7 @@
           }
         }
         else {
-          if (this.selectType === 2) {
+          if (this.selectType === ALL) {
             return ratings
           }
           else {
@@ -176,6 +176,10 @@
         let date = new Date(time)
         return formatDate(date, 'yyyy-MM-dd hh:mm')
       }
+    },
+    beforeDestroyed () {
+      eventBus.$off('rating-type-select')
+      eventBus.$off('rating-content-toggle')
     }
   }
 </script>
