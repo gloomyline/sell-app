@@ -38,7 +38,6 @@ export function loadFromLocal(id, key, def) {
   else {
     if (!seller[id]) return def
     else {
-      console.log(seller[id][key])
       return seller[id][key]
     }
   }

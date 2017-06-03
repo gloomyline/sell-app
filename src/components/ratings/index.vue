@@ -87,6 +87,13 @@
         onlyContent: false
       }
     },
+    watch: {
+      'seller' () {
+        this.$nextTick(() => {
+          this._initScroll()
+        })
+      }
+    },
     created () {
       this.selectType = ALL
       this.onlyContent = false
@@ -108,6 +115,7 @@
         this.selectType = selType
         if (this.bScroll) {
           this.$nextTick(() => {
+            if (!this.bScroll) return
             this.bScroll.refresh()
           })
         }
@@ -117,6 +125,7 @@
         this.onlyContent = !this.onlyContent
         if (this.bScroll) {
           this.$nextTick(() => {
+            if (!this.bScroll) return
             this.bScroll.refresh()
           })
         }
@@ -166,10 +175,6 @@
         }
         return str
       }
-    },
-    beforeDestroyed () {
-      eventBus.$off('rating-type-select')
-      eventBus.$off('rating-content-toggle')
     },
     components: {
       star,

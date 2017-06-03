@@ -108,12 +108,14 @@
       eventBus.$on('rating-type-select', (selType) => {
         this.selectType = selType
         this.$nextTick(() => {
+          if (!this.bScroll) return
           this.bScroll.refresh()
         })
       })
       eventBus.$on('rating-content-toggle', () => {
         this.onlyContent = !this.onlyContent
         this.$nextTick(() => {
+          if (!this.bScroll) return
           this.bScroll.refresh()
         })
       })
@@ -176,10 +178,6 @@
         let date = new Date(time)
         return formatDate(date, 'yyyy-MM-dd hh:mm')
       }
-    },
-    beforeDestroyed () {
-      eventBus.$off('rating-type-select')
-      eventBus.$off('rating-content-toggle')
     }
   }
 </script>
