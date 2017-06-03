@@ -19,6 +19,7 @@
 </template>
 
 <script>
+  import {urlParse} from '@/common/js/utils'
   import header from './components/header'
 
   const ERR_OK = 0
@@ -27,14 +28,19 @@
     name: 'app',
     data () {
       return {
-        seller: {}
+        seller: {
+          id: (() => {
+            let queryParam = urlParse()
+            return queryParam.id
+          })()
+        }
       }
     },
-    mounted () {
-      this.$http.get('/api/seller').then(res => {
+    created () {
+      this.$http.get('/api/seller?id=' + this.seller.id).then(res => {
         res = res.body
         if (res.errno === ERR_OK) {
-          this.seller = res.data
+          this.seller = Object.assign({}, this.seller, res.data)
         }
         else {
           console.log(res.msg)

@@ -68,6 +68,7 @@
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
+  import {saveToLocal, loadFromLocal} from '@/common/js/localStore'
   import star from '@/components/star'
   import split from '@/components/split'
   import spot from '@/components/spot'
@@ -92,6 +93,7 @@
       }
     },
     mounted () {
+      this.favorite = loadFromLocal(this.seller.id, 'favorite', false)
       this.$nextTick(() => {
         this._initBScroll()
         this._initPicsScroll()
@@ -134,6 +136,7 @@
       toggleFavorite (event) {
         if (!event._constructed) return
         this.favorite = !this.favorite
+        saveToLocal(this.seller.id, 'favorite', this.favorite)
       }
     },
     components: {
