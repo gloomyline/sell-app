@@ -23,6 +23,7 @@ export function saveToLocal(id, key, value) {
     }
   }
   seller[id][key] = value
+
   localStorage.__seller__ = JSON.stringify(seller)
 }
 
@@ -33,9 +34,10 @@ export function saveToLocal(id, key, value) {
  * @param def 若指定键没有数据返回的默认值
  */
 export function loadFromLocal(id, key, def) {
-  let seller = JSON.parse(localStorage.__seller__)
+  let seller = localStorage.__seller__
   if (!seller) return def
   else {
+    seller = JSON.parse(seller)
     if (!seller[id]) return def
     else {
       return seller[id][key]
